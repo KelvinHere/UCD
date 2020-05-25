@@ -37,6 +37,14 @@
     background-color: #fff
 }
 
+.ui-menu-color-interests {
+    background-color: red;
+}
+
+.ui-menu-color-github {
+    background-color: darkblue;
+}
+
 /* ------------------------------------------- Special margins/paddings/text .css */
 
 h1,h2,h3,h4 {
@@ -360,6 +368,11 @@ button[type="submit"] {
     margin-bottom: 20px;
     color: #fafafa;
     background-color: #e84610;
+}
+
+/* ------------------------------------------- google maps */
+div #map {
+    min-height: 360px;
 }
 
 /* ------------------------------------------- Media Query */
