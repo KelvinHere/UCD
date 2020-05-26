@@ -23,20 +23,20 @@ function repoInformationHTML(repos) {
     let listItemsHTML = repos.map(function(repo) {
         return `<li>
                     <a href="${repo.html_url}" target="_blank">${repo.name}</a>
-                </li>`
+                </li>`;
     });
-
-    return `<div class="clearfix repo-list>
+    listItemsHTML.forEach(element => console.log(element));
+    return `<div class="clearfix repo-list">
                 <p>
                     <strong>Repo List:</strong>
-                <ul>
-                    ${listItemsHTML.join("/n")}
-                </ul>
                 </p>
+                <ul>
+                    ${listItemsHTML.join("")}
+                </ul>
             </div>`
 }
 
-function fetchGitHubInformation() {
+function fetchGitHubInformation(event) {
     $("gh-user-data").html('');
     $("gh-repo-data").html('');
 
@@ -58,7 +58,7 @@ function fetchGitHubInformation() {
         $.getJSON(`https://api.github.com/users/${username}`),
         $.getJSON(`https://api.github.com/users/${username}/repos`) //seperate promises with comma
     ).then(
-        function(response, secondResponse) { //First and second promise results
+        function(firstResponse, secondResponse) { //First and second promise results
             let userData = firstResponse[0];
             let repoData = secondResponse[0];
             $("#gh-user-data").html(userInformationHTML(userData));
@@ -66,6 +66,9 @@ function fetchGitHubInformation() {
        }, function(errorResponse) {
            if (errorResponse.status === 404) {
                $("#gh-user-data").html(`<h2>${username} not found</h2>`)
+           } else if(errorResponse.status === 403) {
+                let resetTime = new Date(errorResponse.getResponseHeader("X-RateLimit-Reset")*1000);
+                $("#gh-user-data").html(`<h4>Too many requests, please wait until ${resetTime.toLocaleTimeString()}</h4>`);
            } else {
                console.log(errorResponse);
                $("#gh-user-data").html(`<h2>Error: ${errorResponse.responseJSON.message}</h2>`)

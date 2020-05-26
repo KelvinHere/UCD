@@ -110,7 +110,7 @@ img {
 }
 
 .repo-list ul li {
-  display: block;
+  display: inline-block;
 }
 
 .repo-list ul li a {
